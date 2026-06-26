@@ -53,7 +53,7 @@ jobs:
           
           cd worker/
           printf '%s\n' "$WRANGLER_TOML_CONTENT" > wrangler.toml
-          export PNPM_BUILD_ONLY_PACKAGES='esbuild,workerd,sharp,core-js-pure'
+          node -e "const p=require('./package.json'); p.pnpm=p.pnpm||{}; p.pnpm.onlyBuiltDependencies=['esbuild','workerd','sharp','core-js-pure']; require('fs').writeFileSync('./package.json',JSON.stringify(p,null,2))"
           pnpm install --no-frozen-lockfile
 
           if [ -n "$use_mail_wasm_parser" ]; then
